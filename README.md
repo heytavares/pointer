@@ -46,6 +46,21 @@ Sistema completo de gestão de Recursos Humanos desenvolvido em Ruby on Rails pa
 ## 🚀 Instalação
 
 1. **Clone o repositório**
-```bash
-git clone https://github.com/seu-usuario/pointer.git
+   
+git clone https://github.com/heytavares/pointer.git
 cd pointer
+
+2. **Instale as dependências**
+
+bundle install
+yarn install
+
+3. **Configure o banco de dados**
+
+rails db:create
+rails db:migrate
+
+4. **Execute a aplicação**
+
+rails server
+Acesse: http://localhost:3000
