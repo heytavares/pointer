@@ -3,8 +3,7 @@
 ![Ruby on Rails](https://img.shields.io/badge/Ruby_on_Rails-CC0000?style=for-the-badge&logo=ruby-on-rails&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-Sistema completo de gestão de Recursos Humanos desenvolvido em Ruby on Rails para otimizar processos de departamento pessoal, controle de funcionários e gerenciamento de chamados técnicos.
-
+Sistema completo de gestão de Recursos Humanos desenvolvido em Ruby on Rails para otimizar processos de departamento pessoal, controle de funcionários e gerenciamento de chamados técnicos. O desenvolvimento contou com o auxílio de ferramentas de Inteligência Artificial para resolução de dificuldades
 ## 🚀 Funcionalidades
 
 ### 👥 Gestão de Funcionários
