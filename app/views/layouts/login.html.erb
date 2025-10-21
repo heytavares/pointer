@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pointer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      /* ⭐⭐ MUDE O GRADIENTE AQUI ⭐⭐ */
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-card {
+      /* ⭐⭐ MUDE A COR DO CARD AQUI ⭐⭐ */
+      background: #1E293B;
+      padding: 3rem 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      /* ⭐⭐ BORDA ELEGANTE ⭐⭐ */
+      border: 1px solid #334155;
+    }
+
+    .logo {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      /* ⭐⭐ COR DO ÍCONE ⭐⭐ */
+      color: #60A5FA;
+    }
+
+    .login-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      /* ⭐⭐ COR DO TÍTULO ⭐⭐ */
+      color: #F1F5F9;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+      /* ⭐⭐ COR DO SUBTÍTULO ⭐⭐ */
+      color: #94A3B8;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      /* ⭐⭐ COR DO LABEL ⭐⭐ */
+      color: #E2E8F0;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      /* ⭐⭐ COR DA BORDA DO INPUT ⭐⭐ */
+      border: 2px solid #334155;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s;
+      /* ⭐⭐ CORES DO INPUT ⭐⭐ */
+      background: #0F172A;
+      color: #F1F5F9;
+    }
+
+    .form-input:focus {
+      outline: none;
+      /* ⭐⭐ COR DA BORDA NO FOCO ⭐⭐ */
+      border-color: #60A5FA;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    .form-input::placeholder {
+      /* ⭐⭐ COR DO PLACEHOLDER ⭐⭐ */
+      color: #64748B;
+    }
+
+    .btn-login {
+      width: 100%;
+      /* ⭐⭐ COR DO BOTÃO ⭐⭐ */
+      background: #3B82F6;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-login:hover {
+      /* ⭐⭐ COR DO BOTÃO NO HOVER ⭐⭐ */
+      background: #2563EB;
+    }
+
+    .demo-info {
+      /* ⭐⭐ COR DO CARD DE DEMO ⭐⭐ */
+      background: #0F172A;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      /* ⭐⭐ BORDA COLORIDA ⭐⭐ */
+      border-left: 4px solid #3B82F6;
+      text-align: left;
+      border: 1px solid #334155;
+    }
+
+    .demo-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      /* ⭐⭐ COR DO TÍTULO DO DEMO ⭐⭐ */
+      color: #E2E8F0;
+      margin-bottom: 0.75rem;
+    }
+
+    .demo-account {
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .demo-role {
+      font-weight: 500;
+      /* ⭐⭐ COR DO CARGO ⭐⭐ */
+      color: #CBD5E1;
+    }
+
+    .demo-credentials {
+      /* ⭐⭐ COR DAS CREDENCIAIS ⭐⭐ */
+      color: #94A3B8;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .alert-notice {
+      /* ⭐⭐ COR DO ALERTA POSITIVO ⭐⭐ */
+      background: #064E3B;
+      color: #34D399;
+      border: 1px solid #065F46;
+    }
+
+    .alert-alert {
+      /* ⭐⭐ COR DO ALERTA NEGATIVO ⭐⭐ */
+      background: #7F1D1D;
+      color: #FCA5A5;
+      border: 1px solid #991B1B;
+    }
+  </style>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>

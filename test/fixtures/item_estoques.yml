@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  categoria: MyString
+  quantidade: 1
+  estoque_minimo: 1
+  preco_unitario: 9.99
+  localizacao: MyString
+
+two:
+  nome: MyString
+  categoria: MyString
+  quantidade: 1
+  estoque_minimo: 1
+  preco_unitario: 9.99
+  localizacao: MyString

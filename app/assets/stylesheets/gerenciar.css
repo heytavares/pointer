@@ -1,0 +1,215 @@
+<% content_for :page_title, "Gerenciar Chamados" %>
+<% content_for :page_subtitle, "Controle completo dos chamados do sistema" %>
+
+<div style="max-width: 1400px; margin: 0 auto; padding: 20px; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <!-- TESTE VISUAL -->
+  <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 18px; font-weight: bold; border: 3px solid #34d399; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    ✅ CSS INLINE FUNCIONANDO PERFEITAMENTE!
+  </div>
+
+  <!-- HEADER -->
+  <div style="background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 30px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h1 style="margin: 0 0 10px 0; font-size: 32px; font-weight: 700;">🎫 Gerenciar Chamados</h1>
+    <p style="margin: 0; opacity: 0.9; font-size: 16px;">Controle completo dos chamados do sistema</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; color: #1e293b; font-size: 20px; font-weight: 600;">🔍 Filtros e Busca</h2>
+      <div style="display: flex; gap: 10px;">
+        <a href="<%= new_chamado_path %>" style="background: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;">📝 Novo Chamado</a>
+        <a href="<%= chamados_path %>" style="background: white; color: #374151; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; border: 1px solid #d1d5db; display: inline-flex; align-items: center; transition: all 0.2s;">↩️ Voltar</a>
+      </div>
+    </div>
+    
+    <%= form_with url: gerenciar_chamados_path, method: :get do |form| %>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Status</label>
+          <%= select_tag :status, 
+              options_for_select([
+                ['Todos', ''], 
+                ['Aberto', 'aberto'], 
+                ['Em Andamento', 'em_andamento'], 
+                ['Resolvido', 'resolvido'], 
+                ['Fechado', 'fechado']
+              ], params[:status]),
+              style: "width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;" %>
+        </div>
+        
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Prioridade</label>
+          <%= select_tag :prioridade, 
+              options_for_select([
+                ['Todas', ''], 
+                ['Urgente', 'urgente'], 
+                ['Alta', 'alta'], 
+                ['Média', 'media'], 
+                ['Baixa', 'baixa']
+              ], params[:prioridade]),
+              style: "width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;" %>
+        </div>
+        
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Categoria</label>
+          <%= select_tag :categoria, 
+              options_for_select([
+                ['Todas', ''],
+                ['Técnico', 'tecnico'],
+                ['RH', 'rh'], 
+                ['Financeiro', 'financeiro'],
+                ['Estoque', 'estoque'],
+                ['Outros', 'outros']
+              ], params[:categoria]),
+              style: "width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;" %>
+        </div>
+        
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">🔍 Buscar</label>
+          <%= text_field_tag :search, params[:search], placeholder: "Título ou descrição...", 
+              style: "width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;" %>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <input type="submit" value="✅ Aplicar Filtros" style="background: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 14px;">
+        <a href="<%= gerenciar_chamados_path %>" style="background: white; color: #374151; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; border: 1px solid #d1d5db; display: inline-flex; align-items: center; font-size: 14px;">🔄 Limpar</a>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- ESTATÍSTICAS -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px;">
+    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <div style="font-size: 28px; font-weight: 700; color: #1f2937; margin-bottom: 5px;"><%= @chamados.count %></div>
+      <div style="font-size: 14px; color: #6b7280; font-weight: 500;">Total</div>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid #ef4444; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <div style="font-size: 28px; font-weight: 700; color: #1f2937; margin-bottom: 5px;"><%= @chamados.where(prioridade: 'urgente').count %></div>
+      <div style="font-size: 14px; color: #6b7280; font-weight: 500;">Urgentes</div>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <div style="font-size: 28px; font-weight: 700; color: #1f2937; margin-bottom: 5px;"><%= @chamados.select(&:atrasado?).count %></div>
+      <div style="font-size: 14px; color: #6b7280; font-weight: 500;">Atrasados</div>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid #10b981; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <div style="font-size: 28px; font-weight: 700; color: #1f2937; margin-bottom: 5px;"><%= @chamados.where(status: 'aberto').count %></div>
+      <div style="font-size: 14px; color: #6b7280; font-weight: 500;">Abertos</div>
+    </div>
+  </div>
+
+  <!-- TABELA -->
+  <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; min-width: 1000px;">
+        <thead>
+          <tr style="background: #f8fafc;">
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Título</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Funcionário</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Categoria</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Prioridade</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Status</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Data Venc.</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Situação</th>
+            <th style="padding: 15px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 14px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @chamados.each do |chamado| %>
+            <tr style="<%= 'background: #fef2f2;' if chamado.atrasado? %>">
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top;">
+                <div style="font-weight: 600; color: #1e293b; margin-bottom: 5px;"><%= chamado.titulo %></div>
+                <div style="color: #64748b; font-size: 14px;"><%= chamado.descricao.truncate(80) %></div>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top; font-weight: 500;">
+                <%= chamado.funcionario.nome %>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top;">
+                <span style="background: #e0e7ff; color: #3730a3; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; display: inline-block;">
+                  <%= chamado.categoria %>
+                </span>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top;">
+                <span style="
+                  padding: 4px 8px; 
+                  border-radius: 12px; 
+                  font-size: 12px; 
+                  font-weight: 600;
+                  display: inline-block;
+                  background: <%=
+                    case chamado.prioridade
+                    when 'urgente' then '#fee2e2'
+                    when 'alta' then '#fef3c7'
+                    when 'media' then '#dbeafe'
+                    when 'baixa' then '#d1fae5'
+                    else '#f3f4f6'
+                    end
+                  %>;
+                  color: <%=
+                    case chamado.prioridade
+                    when 'urgente' then '#dc2626'
+                    when 'alta' then '#d97706'
+                    when 'media' then '#2563eb'
+                    when 'baixa' then '#059669'
+                    else '#6b7280'
+                    end
+                  %>;
+                ">
+                  <%= chamado.prioridade %>
+                </span>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top;">
+                <span style="background: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; display: inline-block;">
+                  <%= chamado.status.humanize %>
+                </span>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top; font-weight: 500;">
+                <% if chamado.data_vencimento %>
+                  <%= l(chamado.data_vencimento, format: :short) %>
+                <% else %>
+                  <span style="color: #94a3b8; font-style: italic;">-</span>
+                <% end %>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top;">
+                <% if chamado.atrasado? %>
+                  <span style="background: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; display: inline-block;">⏰ Atrasado</span>
+                <% else %>
+                  <span style="color: #059669; font-weight: 500;">✅ No prazo</span>
+                <% end %>
+              </td>
+              <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top;">
+                <div style="display: flex; gap: 5px;">
+                  <a href="<%= chamado_path(chamado) %>" title="Ver detalhes" style="text-decoration: none; font-size: 16px; padding: 6px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">👁️</a>
+                  <a href="<%= edit_chamado_path(chamado) %>" title="Editar" style="text-decoration: none; font-size: 16px; padding: 6px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">✏️</a>
+                  <a href="<%= chamado_path(chamado) %>" data-method="delete" data-confirm="Tem certeza?" title="Excluir" style="text-decoration: none; font-size: 16px; padding: 6px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">🗑️</a>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if @chamados.empty? %>
+      <div style="text-align: center; padding: 50px 30px; background: #f8fafc; border-radius: 10px; border: 2px dashed #cbd5e1; margin-top: 20px;">
+        <div style="font-size: 48px; margin-bottom: 15px; opacity: 0.7;">📋</div>
+        <h3 style="color: #374151; margin-bottom: 8px; font-size: 20px;">Nenhum chamado encontrado</h3>
+        <p style="color: #6b7280; margin-bottom: 20px;">Tente ajustar os filtros ou criar um novo chamado.</p>
+        <a href="<%= new_chamado_path %>" style="background: #3b82f6; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center;">➕ Criar Primeiro Chamado</a>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+body::before {
+  content: "CSS GERENCIAR ATIVO";
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  padding: 6px 10px;
+  z-index: 9999;
+}

@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  email: MyString
+  departamento: MyString
+  cargo: MyString
+  telefone: MyString
+  data_admissao: 2025-09-23
+  salario: 9.99
+  status: MyString
+
+two:
+  nome: MyString
+  email: MyString
+  departamento: MyString
+  cargo: MyString
+  telefone: MyString
+  data_admissao: 2025-09-23
+  salario: 9.99
+  status: MyString

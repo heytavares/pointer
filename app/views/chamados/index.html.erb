@@ -1,0 +1,442 @@
+<% content_for :page_title, "Chamados" %>
+<% content_for :page_subtitle, "Gestão de todos os chamados do sistema" %>
+
+<style>
+  .chamados-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #1e293b;
+    min-height: 100vh;
+  }
+
+  .chamados-header {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+
+  .chamados-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .chamados-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    background: #2a374a;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #3b82f6;
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .actions-section {
+    background: #2a374a;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .actions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .actions-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .search-input {
+    background: #374151;
+    border: 1px solid #4b5563;
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 0.9rem;
+    min-width: 300px;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  }
+
+  .btn-success {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-success:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: #4b5563;
+    transform: translateY(-1px);
+  }
+
+  .tabela-section {
+    background: #2a374a;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    border-radius: 8px;
+  }
+
+  .tabela-chamados {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+  }
+
+  .tabela-chamados th {
+    background: #374151;
+    color: #f8fafc;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #4b5563;
+  }
+
+  .tabela-chamados td {
+    padding: 15px;
+    border-bottom: 1px solid #374151;
+    color: #f1f5f9;
+  }
+
+  .tabela-chamados tr:hover {
+    background: #374151;
+  }
+
+  .tabela-chamados tr.atrasado {
+    background: #7f1d1d;
+    border-left: 4px solid #ef4444;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .badge-urgente { background: #7f1d1d; color: #fecaca; }
+  .badge-alta { background: #78350f; color: #fde68a; }
+  .badge-media { background: #1e3a8a; color: #93c5fd; }
+  .badge-baixa { background: #064e3b; color: #a7f3d0; }
+
+  .badge-aberto { background: #064e3b; color: #a7f3d0; }
+  .badge-em_andamento { background: #78350f; color: #fde68a; }
+  .badge-resolvido { background: #1e3a8a; color: #93c5fd; }
+  .badge-fechado { background: #374151; color: #d1d5db; }
+
+  .badge-atraso {
+    background: #7f1d1d;
+    color: #fecaca;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .acoes-rapidas {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .btn-warning {
+    background: #f59e0b;
+    color: white;
+  }
+
+  .btn-warning:hover {
+    background: #d97706;
+    transform: translateY(-1px);
+  }
+
+  .btn-danger {
+    background: #ef4444;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+  }
+
+  .empty-state {
+    background: #2a374a;
+    border: 2px dashed #374151;
+    border-radius: 16px;
+    padding: 60px 40px;
+    text-align: center;
+    color: #94a3b8;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  .empty-title {
+    font-size: 1.5rem;
+    color: #f8fafc;
+    margin-bottom: 10px;
+  }
+
+  .empty-description {
+    font-size: 1rem;
+    margin-bottom: 25px;
+  }
+
+  @media (max-width: 768px) {
+    .actions-header {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+    
+    .search-form {
+      flex-direction: column;
+    }
+    
+    .search-input {
+      min-width: auto;
+    }
+    
+    .acoes-rapidas {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="chamados-container">
+  <!-- CABEÇALHO -->
+  <div class="chamados-header">
+    <h1 class="chamados-title">🎫 Todos os Chamados</h1>
+    <p class="chamados-subtitle">Gestão completa dos chamados do sistema</p>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <span class="stat-number"><%= @chamados.count %></span>
+        <span class="stat-label">Total de Chamados</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚠️</div>
+        <span class="stat-number"><%= @chamados.where(prioridade: 'urgente').count %></span>
+        <span class="stat-label">Urgentes</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏰</div>
+        <span class="stat-number"><%= @chamados.select(&:atrasado?).count %></span>
+        <span class="stat-label">Atrasados</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔓</div>
+        <span class="stat-number"><%= @chamados.where(status: 'aberto').count %></span>
+        <span class="stat-label">Abertos</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="actions-section">
+    <div class="actions-header">
+      <h2 class="actions-title">🔍 Gerenciar Chamados</h2>
+      <div class="search-form">
+        <%= text_field_tag :search, params[:search], placeholder: "Buscar chamados...", class: "search-input" %>
+        <%= submit_tag "Buscar", class: "btn btn-secondary" %>
+        <%= link_to "➕ Novo Chamado", new_chamado_path, class: "btn btn-success" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabela-section">
+    <% if @chamados.any? %>
+      <div class="table-responsive">
+        <table class="tabela-chamados">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Funcionário</th>
+              <th>Categoria</th>
+              <th>Prioridade</th>
+              <th>Status</th>
+              <th>Data Venc.</th>
+              <th>Situação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @chamados.each do |chamado| %>
+              <tr class="<%= 'atrasado' if chamado.atrasado? %>">
+                <td>
+                  <strong style="color: #f8fafc; display: block; margin-bottom: 4px;">
+                    <%= chamado.titulo %>
+                  </strong>
+                  <small style="color: #94a3b8;">
+                    <%= chamado.descricao.truncate(80) %>
+                  </small>
+                </td>
+                <td style="font-weight: 500;">
+                  <%= chamado.funcionario.nome %>
+                </td>
+                <td>
+                  <span style="background: #1e3a8a; color: #93c5fd; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">
+                    <%= chamado.categoria&.humanize || "N/D" %>
+                  </span>
+                </td>
+                <td>
+                  <span class="badge badge-<%= chamado.prioridade || 'media' %>">
+                    <%= chamado.prioridade&.humanize || "N/D" %>
+                  </span>
+                </td>
+                <td>
+                  <span class="badge badge-<%= chamado.status || 'aberto' %>">
+                    <%= chamado.status&.humanize || "N/D" %>
+                  </span>
+                </td>
+                <td>
+                  <% if chamado.data_vencimento %>
+                    <strong><%= l(chamado.data_vencimento, format: :short) %></strong>
+                  <% else %>
+                    <span style="color: #94a3b8; font-style: italic;">-</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if chamado.atrasado? %>
+                    <span class="badge badge-atraso">⏰ Atrasado</span>
+                  <% else %>
+                    <span style="color: #10b981; font-weight: 500;">✅ No prazo</span>
+                  <% end %>
+                </td>
+                <td>
+                  <div class="acoes-rapidas">
+                    <%= link_to "👁️", chamado, class: "btn btn-primary btn-sm", title: "Ver detalhes" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3 class="empty-title">Nenhum chamado encontrado</h3>
+        <p class="empty-description">Comece criando o primeiro chamado do sistema.</p>
+        <%= link_to "➕ Criar Primeiro Chamado", new_chamado_path, class: "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+</div>

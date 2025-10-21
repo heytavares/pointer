@@ -1,0 +1,390 @@
+<% content_for :page_title, "Detalhes do Chamado" %>
+<% content_for :page_subtitle, "Informações completas do chamado ##{@chamado.id}" %>
+
+<style>
+  .chamado-details-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #1e293b;
+    min-height: 100vh;
+  }
+
+  .chamado-header {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .chamado-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    color: white;
+  }
+
+  .chamado-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: #e2e8f0;
+  }
+
+  .chamado-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+
+  .info-card {
+    background: #2a374a;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #374151;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .info-grid {
+    display: grid;
+    gap: 20px;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .info-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .info-value {
+    font-size: 1rem;
+    color: #f1f5f9;
+    font-weight: 500;
+  }
+
+  .descricao-content {
+    background: #374151;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+
+  .status-card {
+    background: #2a374a;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: white;
+  }
+
+  .badge-urgente { background: #7f1d1d; color: #fecaca; border: 1px solid #991b1b; }
+  .badge-alta { background: #78350f; color: #fde68a; border: 1px solid #92400e; }
+  .badge-media { background: #1e3a8a; color: #93c5fd; border: 1px solid #3730a3; }
+  .badge-baixa { background: #064e3b; color: #a7f3d0; border: 1px solid #065f46; }
+  .badge-indefinido { background: #374151; color: #d1d5db; border: 1px solid #4b5563; }
+
+  .status-aberto { background: #064e3b; color: #a7f3d0; }
+  .status-em_andamento { background: #78350f; color: #fde68a; }
+  .status-resolvido { background: #1e3a8a; color: #93c5fd; }
+  .status-fechado { background: #374151; color: #d1d5db; }
+  .status-indefinido { background: #374151; color: #9ca3af; }
+
+  .atraso-alert {
+    background: #7f1d1d;
+    border: 1px solid #991b1b;
+    color: #fecaca;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+
+  .actions-section {
+    background: #2a374a;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  .actions-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary { background: #3b82f6; color: white; }
+  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+
+  .btn-warning { background: #f59e0b; color: white; }
+  .btn-warning:hover { background: #d97706; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+
+  .btn-danger { background: #ef4444; color: white; }
+  .btn-danger:hover { background: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+
+  .btn-secondary { background: #6b7280; color: white; }
+  .btn-secondary:hover { background: #4b5563; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4); }
+
+  .timeline {
+    margin-top: 20px;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #374151;
+  }
+
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    background: #3b82f6;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .timeline-content {
+    flex: 1;
+  }
+
+  .timeline-date {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 5px;
+  }
+
+  .timeline-text {
+    color: #e2e8f0;
+    font-weight: 500;
+  }
+
+  .categoria-badge {
+    background: #1e3a8a;
+    color: #93c5fd;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  .data-vencimento {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+
+  .data-indefinida {
+    color: #94a3b8;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .chamado-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .chamado-meta {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .actions-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="chamado-details-container">
+ 
+  <div class="chamado-header">
+    <h1 class="chamado-title"><%= @chamado.titulo %></h1>
+    <div class="chamado-meta">
+      <div class="meta-item">
+        <span>📅 Criado em: <%= l(@chamado.created_at, format: :long) %></span>
+      </div>
+      <div class="meta-item">
+        <span>👤 Por: <%= @chamado.funcionario.nome %></span>
+      </div>
+      <div class="meta-item">
+        <span>🆔 ID: #<%= @chamado.id %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chamado-content">
+    
+    <div class="info-card">
+      <h2 class="card-title">📋 Informações do Chamado</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Descrição</span>
+          <div class="descricao-content">
+            <%= @chamado.descricao %>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="info-item">
+            <span class="info-label">Categoria</span>
+            <span class="info-value">
+              <span class="categoria-badge">
+                <%= @chamado.categoria&.humanize || "Não definida" %>
+              </span>
+            </span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">Funcionário</span>
+            <span class="info-value">👤 <%= @chamado.funcionario.nome %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="status-card">
+      <h2 class="card-title">⚡ Status e Prioridade</h2>
+      
+      <div class="info-item" style="margin-bottom: 20px;">
+        <span class="info-label">Prioridade</span>
+        <span class="status-badge badge-<%= @chamado.prioridade || 'indefinido' %>">
+          <%= @chamado.prioridade&.humanize || "Não definida" %>
+        </span>
+      </div>
+      
+      <div class="info-item" style="margin-bottom: 20px;">
+        <span class="info-label">Status</span>
+        <span class="status-badge status-<%= @chamado.status || 'indefinido' %>">
+          <%= @chamado.status&.humanize || "Não definido" %>
+        </span>
+      </div>
+      
+      <div class="info-item">
+        <span class="info-label">Data de Vencimento</span>
+        <span class="data-vencimento">
+          <% if @chamado.data_vencimento %>
+            📅 <%= l(@chamado.data_vencimento, format: :long) %>
+          <% else %>
+            <span class="data-indefinida">Não definida</span>
+          <% end %>
+        </span>
+      </div>
+
+      <% if @chamado.atrasado? %>
+        <div class="atraso-alert">
+          ⚠️ <strong>ATRASADO!</strong> Este chamado está fora do prazo.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="actions-section">
+    <h2 class="actions-title">🔧 Ações</h2>
+    <div class="actions-grid">
+
+      <%= link_to "👁️ Voltar para Lista", chamados_path, class: "btn-action btn-secondary" %>
+
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h2 class="card-title">🕒 Histórico</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-date"><%= l(@chamado.created_at, format: :long) %></div>
+          <div class="timeline-text">Chamado criado por <%= @chamado.funcionario.nome %></div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-date"><%= l(@chamado.updated_at, format: :long) %></div>
+          <div class="timeline-text">Última atualização</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

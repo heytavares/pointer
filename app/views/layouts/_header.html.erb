@@ -1,0 +1,31 @@
+<header class="header">
+  <div class="header-content">
+    <div>
+      <h1 class="page-title"><%= content_for(:page_title) || 'Painel de Controle' %></h1>
+      <p class="page-subtitle">
+        <%= content_for(:page_subtitle) || 
+          (usuario_atual&.admin? ? 'Visão geral do sistema' : 'Meu painel') 
+        %>
+      </p>
+    </div>
+    
+    <div class="header-actions">
+      
+      <!-- Usuário Logado -->
+      <% if usuario_atual %>
+        <div class="user-menu">
+          <div class="user-avatar-sm">
+            <%= usuario_atual.nome[0..1].upcase %>
+          </div>
+          <div>
+            <span class="user-name-sm"><%= usuario_atual.nome %></span>
+            <span class="user-role"><%= usuario_atual.admin? ? 'Administrador' : 'Membro' %></span>
+          </div>
+          <%= button_to logout_path, method: :delete, class: "logout-btn", form: { class: "logout-form" } do %>
+            🚪
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</header>

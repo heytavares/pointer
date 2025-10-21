@@ -1,0 +1,444 @@
+<% content_for :page_title, "Dashboard Principal" %>
+<% content_for :page_subtitle, "Visão geral do sistema" %>
+
+<!-- Seção de Estatísticas -->
+<div class="dashboard-section">
+  <h2 class="section-title">📊 Estatísticas Gerais</h2>
+  <div class="stats-grid">
+    <!-- Total de Funcionários -->
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3 class="stat-title">Funcionários</h3>
+          <p class="stat-subtitle">Total cadastrados</p>
+        </div>
+      </div>
+      <div class="stat-value"><%= @total_funcionarios || 0 %></div>
+      <div class="stat-trend">
+        <span class="trend-positive">+2 este mês</span>
+      </div>
+    </div>
+
+    <!-- Chamados Ativos -->
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">🎫</div>
+        <div class="stat-info">
+          <h3 class="stat-title">Chamados Ativos</h3>
+          <p class="stat-subtitle">Em aberto/andamento</p>
+        </div>
+      </div>
+      <div class="stat-value"><%= @chamados_ativos || 0 %></div>
+      <div class="stat-trend">
+        <% if @chamados_atrasados.to_i > 0 %>
+          <span class="trend-negative"><%= @chamados_atrasados %> atrasados</span>
+        <% else %>
+          <span class="trend-positive">No prazo</span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Total de Itens no Estoque -->
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">📦</div>
+        <div class="stat-info">
+          <h3 class="stat-title">Itens no Estoque</h3>
+          <p class="stat-subtitle">Total disponível</p>
+        </div>
+      </div>
+      <div class="stat-value"><%= @total_itens_estoque || 0 %></div>
+      <div class="stat-trend">
+        <% if @itens_estoque_baixo.to_i > 0 %>
+          <span class="trend-negative"><%= @itens_estoque_baixo %> com estoque baixo</span>
+        <% else %>
+          <span class="trend-positive">Estoque ok</span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Chamados por Prioridade -->
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-info">
+          <h3 class="stat-title">Prioridade Alta</h3>
+          <p class="stat-subtitle">Chamados urgentes</p>
+        </div>
+      </div>
+      <div class="stat-value"><%= @chamados_urgentes || 0 %></div>
+      <div class="stat-trend">
+        <span class="trend-warning">Atenção necessária</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Seção de Chamados Recentes -->
+<div class="dashboard-section">
+  <div class="section-header">
+    <h2 class="section-title">🎫 Chamados Recentes</h2>
+    <%= link_to "Ver Todos", chamados_path, class: "btn-view-all" %>
+  </div>
+
+  <% if @chamados_recentes.any? %>
+    <div class="chamados-grid">
+      <% @chamados_recentes.each do |chamado| %>
+        <div class="chamado-card <%= chamado.prioridade %>">
+          <div class="chamado-header">
+            <h3 class="chamado-title"><%= chamado.titulo %></h3>
+            <span class="chamado-priority <%= chamado.prioridade %>">
+              <%= chamado.prioridade %>
+            </span>
+          </div>
+          
+          <p class="chamado-descricao"><%= chamado.descricao.truncate(100) %></p>
+          
+          <div class="chamado-meta">
+            <div class="meta-item">
+              <span class="meta-label">Por:</span>
+              <span class="meta-value"><%= chamado.funcionario.nome %></span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Categoria:</span>
+              <span class="meta-value"><%= chamado.categoria %></span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Status:</span>
+              <span class="meta-value status-<%= chamado.status %>"><%= chamado.status %></span>
+            </div>
+            <% if chamado.data_vencimento %>
+              <div class="meta-item">
+                <span class="meta-label">Vencimento:</span>
+                <span class="meta-value <%= 'vencido' if chamado.atrasado? %>">
+                  <%= l(chamado.data_vencimento, format: :short) %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          
+          <div class="chamado-actions">
+            <%= link_to "Ver Detalhes", chamado_path(chamado), class: "btn-details" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <h3>Nenhum chamado encontrado</h3>
+      <p>Não há chamados recentes para exibir.</p>
+      <%= link_to "Criar Primeiro Chamado", new_chamado_path, class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+/* Seções do Dashboard */
+.dashboard-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-view-all {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-view-all:hover {
+  background: var(--primary-dark);
+}
+
+/* Grid de Estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.stat-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-trend {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.trend-positive {
+  color: #10b981;
+}
+
+.trend-negative {
+  color: #ef4444;
+}
+
+.trend-warning {
+  color: #f59e0b;
+}
+
+/* Grid de Chamados */
+.chamados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.chamado-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.chamado-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.chamado-card.urgente {
+  border-left: 4px solid #ef4444;
+}
+
+.chamado-card.alta {
+  border-left: 4px solid #f59e0b;
+}
+
+.chamado-card.media {
+  border-left: 4px solid #3b82f6;
+}
+
+.chamado-card.baixa {
+  border-left: 4px solid #10b981;
+}
+
+.chamado-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.chamado-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.chamado-priority {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.chamado-priority.urgente {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.chamado-priority.alta {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.chamado-priority.media {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.chamado-priority.baixa {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.chamado-descricao {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.chamado-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.meta-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.status-aberto {
+  color: #10b981;
+}
+
+.status-em_andamento {
+  color: #f59e0b;
+}
+
+.status-resolvido {
+  color: #6b7280;
+}
+
+.vencido {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.chamado-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-details {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-details:hover {
+  background: var(--primary-dark);
+}
+
+/* Estado Vazio */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background: var(--surface-color);
+  border-radius: 1rem;
+  border: 2px dashed var(--border-color);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .chamado-card {
+  background: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .empty-state {
+  background: var(--surface-color);
+  border-color: var(--border-color);
+}
+</style>

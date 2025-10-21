@@ -1,0 +1,30 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">Pointer</div>
+    <div class="sidebar-subtitle">Gestão Integrada</div>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <%= link_to painel_path, class: "nav-item #{'active' if current_page?(painel_path)}" do %>
+      <span class="nav-icon">📊</span>
+      Painel de Controle
+    <% end %>
+    
+    <%= link_to funcionarios_path, class: "nav-item #{'active' if current_page?(funcionarios_path)}" do %>
+      <span class="nav-icon">👥</span>
+      Funcionários
+    <% end %>
+    
+    <%= link_to chamados_path, class: "nav-item #{'active' if current_page?(chamados_path)}" do %>
+      <span class="nav-icon">🎫</span>
+      Chamados
+    <% end %>
+    
+
+  
+  <div class="sidebar-footer">
+    <div class="user-info">
+      </div>
+    </div>
+  </div>
+</aside>

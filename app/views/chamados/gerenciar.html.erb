@@ -1,0 +1,72 @@
+<% content_for :page_title, "Gerenciar Chamados" %>
+<% content_for :page_subtitle, "Controle completo dos chamados do sistema" %>
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+  <h1 style="color: #1e293b;">🎫 Gerenciar Chamados</h1>
+  
+  <!-- TESTE: Criar chamado sem autenticação -->
+  <div style="background: #f0f9ff; border: 2px solid #0ea5e9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+    <h3 style="color: #0369a1;">🚀 Criar Chamado de Teste (SEM AUTENTICAÇÃO)</h3>
+    
+    <%= form_with url: chamados_path, method: :post do |form| %>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Título</label>
+          <%= text_field_tag :titulo, "Chamado Teste #{Time.now.strftime('%H:%M')}", style: "width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;", required: true %>
+        </div>
+        
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Funcionário</label>
+          <%= select_tag :funcionario_id, options_from_collection_for_select(Funcionario.all, :id, :nome), style: "width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;", required: true %>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Descrição</label>
+        <%= text_area_tag :descricao, "Descrição do chamado de teste", rows: 2, style: "width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;", required: true %>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Categoria</label>
+          <%= select_tag :categoria, options_for_select(Chamado.categorias.keys), style: "width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" %>
+        </div>
+        
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Prioridade</label>
+          <%= select_tag :prioridade, options_for_select(Chamado.prioridades.keys), style: "width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" %>
+        </div>
+      </div>
+      
+      <%= hidden_field_tag :status, "aberto" %>
+      
+      <button type="submit" style="background: #10b981; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+        ✅ Criar Chamado de Teste
+      </button>
+    <% end %>
+  </div>
+
+  <!-- Lista de Chamados -->
+  <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
+    <h3>📋 Chamados Existentes (<%= @chamados.count %>)</h3>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+      <thead>
+        <tr style="background: #f8fafc;">
+          <th style="padding: 12px; border: 1px solid #e2e8f0; text-align: left;">Título</th>
+          <th style="padding: 12px; border: 1px solid #e2e8f0; text-align: left;">Funcionário</th>
+          <th style="padding: 12px; border: 1px solid #e2e8f0; text-align: left;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @chamados.each do |chamado| %>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #e2e8f0;"><%= chamado.titulo %></td>
+            <td style="padding: 12px; border: 1px solid #e2e8f0;"><%= chamado.funcionario.nome %></td>
+            <td style="padding: 12px; border: 1px solid #e2e8f0;"><%= chamado.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

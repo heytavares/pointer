@@ -1,0 +1,62 @@
+<%= form_with(model: funcionario, class: "contents") do |form| %>
+  <% if funcionario.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(funcionario.errors.count, "error") %> prohibited this funcionario from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% funcionario.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :nome %>
+    <%= form.text_field :nome, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:nome].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:nome].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :email %>
+    <%= form.text_field :email, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:email].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:email].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :departamento %>
+    <%= form.text_field :departamento, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:departamento].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:departamento].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :cargo %>
+    <%= form.text_field :cargo, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:cargo].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:cargo].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :telefone %>
+    <%= form.text_field :telefone, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:telefone].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:telefone].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :data_admissao %>
+    <%= form.date_field :data_admissao, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:data_admissao].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:data_admissao].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :salario %>
+    <%= form.text_field :salario, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:salario].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:salario].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :status %>
+    <%= form.text_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": funcionario.errors[:status].none?, "border-red-400 focus:outline-red-600": funcionario.errors[:status].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>
+
+<div class="field">
+  <%= form.label :status %>
+  <%= form.select :status, [['Ativo', 'ativo'], ['Inativo', 'inativo'], ['Férias', 'ferias']] %>
+</div>
